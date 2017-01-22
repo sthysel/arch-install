@@ -130,5 +130,24 @@ umount /mnt
 reboot
 ```
 
+# Post Install
+
+Install some things we know whe want
+```
+pacman -S zsh tree docker git
+```
+
+Now add a normal user (thys) and give it sudo rights.
+
+```
+useradd -m -g users -s /bin/zsh thys
+passwd thys
+visudo # thys ALL=(ALL) ALL
+```
+
+Now typically use the nomal user for day to day things and escalate to `sudo`
+when needed. Now is a good time to give the `root` user a passwd, as arch does
+not set one OOTBV, or maybe better yet just disable it. I, however don't as it
+irritates the wowsers and irritating wowsers pleases me.
 
 
