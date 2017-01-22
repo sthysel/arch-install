@@ -137,12 +137,19 @@ Install some things we know whe want
 pacman -S zsh tree docker git
 ```
 
-Now add a normal user (thys) and give it sudo rights.
+Now add a priveledged user (thys) and give it sudo rights.
 
 ```
 useradd -m -g users -s /bin/zsh thys
 passwd thys
 visudo # thys ALL=(ALL) ALL
+```
+
+For a admin-type user its convenient to also be in the `wheel` and `adm` groups, this way
+you can view system logs without sudo escalation.
+```
+gpasswd -a thys wheel
+gpasswd -a thys adm
 ```
 
 Now typically use the nomal user for day to day things and escalate to `sudo`
