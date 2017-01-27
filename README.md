@@ -13,10 +13,11 @@ Be sure to use ```dmesg``` or similar to determine target drive
 $ sudo dd if=archlinux-2017.01.01-dual.iso of=/dev/sdb1 bs=4M
 ```
 
-If installing into vmware vm on a UEFI secured boot machine, vmware will fail,
-disable secure boot in bios.
+Disable secure boot in bios, change boot sequence to boot of USB drive first.
 
-Boot image or iso, it will drop you into a root terminal, you will now:
+## Boot of USB disk
+
+Now boot of the USB stick, it will drop you into a root terminal, you will now:
 - make sure you have coms, wifi or ethernet using a USB dongle.
 - make some partitions, typically / and swap.
 - format the partitions
@@ -30,10 +31,10 @@ Boot image or iso, it will drop you into a root terminal, you will now:
 
 ## Internet
 
-Arch installs of the internets so be sure you an get to it. I swapped out the
+Arch installs of the internets so be sure you can get to it. I swapped out the
 accursed good for fuckall broadcom card and put in a sweet intel job.
 
-Use ```# wifi_menu ``` and connect to your wifi network. Alternatively plug in
+Use ```# wifi_menu``` and connect to your wifi network. Alternatively plug in
 your USB ethernet adaptor you stole from your previous job.
 
 ## Make partitions
@@ -41,7 +42,8 @@ your USB ethernet adaptor you stole from your previous job.
 So, you are a security nut with shit to hide ? Of course you are, they have made perps of us all so
 use [this
 guide](https://wiki.archlinux.org/index.php/dm-crypt/encrypting_an_entire_system)
-to exersise the little power you assume you have left, you poor deluded fool.
+to exersise the little power you assume you have left, you poor deluded 20'th
+century fool.
 
 Here is where you detroy the data on your M2 disk and build a new Arch distro
 on top of its smoking ruin. Did you know that you could take it out, store it
@@ -342,6 +344,8 @@ EndSection
 # Misc
 
 ## Insync
+
+Insync syncs google drive.
 
 Install insync from the AUR
 ```
