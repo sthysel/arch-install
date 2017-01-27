@@ -1,10 +1,11 @@
-# Installing arch
+# Installing arch on Dell XPS 13 9350 
 
-Instructions to install Arch of a .iso image to a target machine (metal or virtual).
+This recipe describes how to install Arch onto a Dell XPS 13 9350 machine.  It
+destroys all previous installed OS's and boots Linux only, as it should be.
 
-First get a iso that you can use to boot into a VM or burn to a USB and boot a real machine.
-The arch wiki lists a current .iso, get it from there. Write the iso to a USB drive if the target is
-a real machine, else skip this step and continue below.
+First get a iso that you can use to burnto a USB stick and boot the XPS.  The
+arch wiki lists a current .iso, get it from there. Write the iso to a USB drive
+if the target is a real machine, else skip this step and continue after.
 
 
 ## Write iso to USB flash drive:
@@ -14,21 +15,58 @@ Be sure to use ```dmesg``` or similar to determine target drive
 $ sudo dd if=archlinux-2017.01.01-dual.iso of=/dev/sdb1 bs=4M
 ```
 
-If installing into vmware vm on a UEFI secured boot machine, vmware will fail, disable secure boot.
+If installing into vmware vm on a UEFI secured boot machine, vmware will fail,
+disable secure boot in bios.
 
 Boot image or iso, it will drop you into a root terminal, you will now:
 - make some partitions, typically / and swap.
 - format the partitions
 - mount the / partition somwhere convenient in the live bootimage
 - install arch base into / of the internet.
--
+- chroot into the base image
+- do some system setup
+- reboot into your new arch system
+- continue with typical userland setup like a display manger, window manager
+  and apps.
 
 ## Make partitions
 
-Make a swap and / partition, some peasants like to have a /home partition, you
-can safely ignore their pedantry.  Use ```cfdisk``` a nice curses clownsuit for
-fdisk, or just use fdisk. I use ```cfdisk```
+Here is where you detroy the data on your M2 disk and build a new Arch distro
+on top of it. Did you know that you could take it out, store it somewhere save,
+and stick a new one in, maybe even say a 1TB one. The cost about AU$450 at the
+time of writing, so fuck that.
 
+
+You are shooting for a layout like so:
+```
+Disk /dev/nvme0n1: 238.5 GiB, 256060514304 bytes, 500118192 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 7681BE40-8D8B-4428-9765-14054A6FB0D3
+
+Device            Start       End   Sectors   Size Type
+/dev/nvme0n1p1     2048   1050623   1048576   512M EFI System
+/dev/nvme0n1p2  1050624  16777215  15726592   7.5G Linux swap
+/dev/nvme0n1p3 16777216 500117503 483340288 230.5G Linux filesystem
+
+```
+
+- A small EFI boot disk
+- A larger swap disk, 8G seems fine.
+- The rest of the space
+
+Some peasants like to have a ```/home``` partition, those types of people
+usually do a lot of other stupid shit too, so do as you please, a single / on a
+M2 based laptop is fine for me.
+
+Use ```cfdisk``` a nice curses clownsuit for fdisk, or just use fdisk. I use
+```cfdisk``` ```gparted``` is also a good choice, just get your partitions made
+and be happy.
+
+
+For ```cfdisk```
 - Select label as ```dos```
 - Use the TUI and create swap and root partition using the buttons. I first make
   the swap which is 2x the RAM size, and then the / partition, which is the
@@ -37,42 +75,71 @@ fdisk, or just use fdisk. I use ```cfdisk```
 - make / bootable
 - `write` changes and quit 
 
+For ```gparted``` note that the partition size is specified nose tot tail, like
+a train of horny Echidnas:
 
-verify the partitions are to your liking:
-
-
+```
+# parted /dev/nvme0n1
+(parted) mklabel gpt
+(parted) mkpart ESP fat32 1MiB 513MiB
+(parted) set 1 boot on
+(parted) mkpart primary linux-swap 513MiB 8.5GiB
+(parted) mkpart primary ext4 8.5GiB 100%
+(parted) quit
+```
 
 ## Format partitions
 
+The EFI boot disk is FAT 32, as you would expect from a bulshit spec from
+Microsoft. Fortunately this allows the TSA and ASIO to install their shit
+without destroying your pr0n. Please think of everybody elses children. The
+ones whose parents get all the tax bennefits you pay for.
+
 ```
-mkswap /dev/sda1
-mkfs.ext4 /dev/sda2
+# mkfs.vfat -F32 /dev/nvme0n1p1
 ```
 
-Switch on swap partition: `swapon /dev/sda1/`
+Now for swap:
+
+```
+# mkswap /dev/nvme0n1p2
+# swapon /dev/nvme0n1p2
+```
+
+Here goes the pr0n:
+
+```
+# mkfs.ext4 /dev/nvme0n1p3
+```
 
 
 ## Mount and install Arch base
-Now mount the / partition and install Arch base on the / partition.
+
+The partitions are prepped and ready to go. 
+Now mount the / partition and /boot partitions and install Arch base on the /
+partition.
 
 ```
-mount /dev/sda2 /mnt/
-pacstrap /mnt base base-devel
+# mount /dev/nvme0n1p3 /mnt/
+# mkdir -p /mnt/boot
+# mount /dev/nvme0n1p1 /mnt/boot
+# pacstrap /mnt base base-devel
 ```
 
-That will take a while.
+That will take a while. Enjoy some unsavory br0wsing.
 
+## System setup
 
 Generate the fstab file from the mounts: 
 ```
-genfstab /mnt >> /mnt/etc/fstab
+# genfstab /mnt >> /mnt/etc/fstab
 ```
 
 Verify `/etc/fstab/` is good: ```cat /mnt/etc/fstab```.
 
 Now chroot to the newly installed Arch system:
 ```
-arch-chroot /mnt /bin/bash
+# arch-chroot /mnt /bin/bash
 ```
 
 Fucking immediately install `vim` how the fuck can't that be part of the base
@@ -82,59 +149,120 @@ install ?
 pacman -S vim
 ```
 
-Set and generate the locale
+### Set and generate the locale
+
 ```
-vim /etc/locale.gen # en.US_UTF-8 UTF-8
-locale-gen
+# vim /etc/locale.gen # en.US_UTF-8 UTF-8
+# locale-gen
 ```
 
 Register the locale in ```/etc/locale.conf``` : ```vim /etc/locale.conf``` And
 add  ```LANG=en_US.UTF-8```
 
-# Timezone
+### Timezone
+
 Find your timezone in ```/usr/share/timezone``` and link it to ```/etc/localtime```
 
 ```
-rm /etc/localtime
-ln -s /usr/share/zoneinfo/Australia/Perth /etc/localtime
+# rm /etc/localtime
+# ln -s /usr/share/zoneinfo/Australia/Perth /etc/localtime
 ```
 
 Set system and harware clock to UTC.
 ```
-hwclock --systohc --utc 
+# hwclock --systohc --utc 
 ```
 
-# Hostname
+### Hostname
 Set hostname in ```/etc/hosts``` as well as ```/etc/hostname```.
 
-# Get IP from DHCP server
+### Get IP from DHCP server
 
 ```
-systemctl enable dhcpcd
+# systemctl enable dhcpcd
 ```
 
-# Grubb
+### Boot
 
 Now you need to enable booting the bootable partition we prepared earlier.
+Grub is not working on this laptop so you will be using using systemd-boot in
+UEFI mode.
+
+Install the bootloader:
+```
+# bootctl --path=/boot install
+```
+
+Edi loader.conf file:
+```
+# vim /boot/loader/loader.conf
+```
+
+And make sure only these lines are there:
 
 ```
-pacman -S grub os-prober
-grub-install /dev/sda
-grub-mkconfig -o /boot/grub/grub.cfg
+default arch
+timeout 1 
+editor 0
+```
+
+Take note of the long UUID number, and create arch.conf file:
+
+```
+# blkid -s PARTUUID -o value /dev/nvme0n1p2 >>  /boot/loader/entries/arch.conf
+```
+
+Take note of the long UUID number you just append to the end of arch.conf file and
+edit the thing to look like so:
+
+(Change the PARTUUID number with the UUID number on your machine):
+
+
+```
+title Lollicon Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=PARTUUID=66e3f67d-f59a-4086-acdd-a6e248a3ee80 rw
+```
+
+
+It’s now time to update the bootloader:
+
+```
+# bootctl update
+
+Dell XPS 13 uses PCIe for storage, you need to add `nvme` module. Edit the
+mkinitcpio configuration file:
+
+```
+vim /etc/mkinitcpio.conf
+```
+
+And add nvme in the MODULES line:
+
+```
+MODULES="nvme"
+```
+
+Now update the bootloader:
+
+```
+# mkinitcpio -p linux
 ```
 
 Now exit the chroot, unmout the partitions and reboot.
+
 ```
-exit
-umount /mnt
-reboot
+# exit
+# umount /mnt
+# reboot
 ```
 
 # Post Install
 
-Install some things we know whe want
+Install some things we know we want right now
 ```
-pacman -S zsh tree docker git
+# pacman -S zsh tree docker git i
 ```
 
 Now add a priveledged user (thys) and give it sudo rights.
@@ -152,9 +280,11 @@ gpasswd -a thys wheel
 gpasswd -a thys adm
 ```
 
+``` journalctrl -p 3 -xb ``` now shows all logs for thys
+
 Now typically use the nomal user for day to day things and escalate to `sudo`
 when needed. Now is a good time to give the `root` user a passwd, as arch does
-not set one OOTBV, or maybe better yet just disable it. I, however don't as it
+not set one OOTB, or maybe better yet just disable it. I, however don't as it
 irritates the wowsers and irritating wowsers pleases me.
 
 
