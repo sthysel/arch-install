@@ -3,7 +3,8 @@
 This recipe describes how to install Arch onto a Dell XPS 13 9350 machine.  It
 destroys all previous installed OS's and boots Linux only, as it should be.
 
-First get a iso that you can use to burn to a USB stick and boot the XPS.  The
+First get a iso that you can use to burn to a USB stick and boot the XPS. The
+arch wiki's install section will have a link.
 
 ## Write iso to USB flash drive:
 
