@@ -3,10 +3,7 @@
 This recipe describes how to install Arch onto a Dell XPS 13 9350 machine.  It
 destroys all previous installed OS's and boots Linux only, as it should be.
 
-First get a iso that you can use to burnto a USB stick and boot the XPS.  The
-arch wiki lists a current .iso, get it from there. Write the iso to a USB drive
-if the target is a real machine, else skip this step and continue after.
-
+First get a iso that you can use to burn to a USB stick and boot the XPS.  The
 
 ## Write iso to USB flash drive:
 
@@ -19,6 +16,7 @@ If installing into vmware vm on a UEFI secured boot machine, vmware will fail,
 disable secure boot in bios.
 
 Boot image or iso, it will drop you into a root terminal, you will now:
+- make sure you have coms, wifi or ethernet using a USB dongle.
 - make some partitions, typically / and swap.
 - format the partitions
 - mount the / partition somwhere convenient in the live bootimage
@@ -29,12 +27,20 @@ Boot image or iso, it will drop you into a root terminal, you will now:
 - continue with typical userland setup like a display manger, window manager
   and apps.
 
+## Internet
+
+Arch installs of the internets so be sure you an get to it. I swapped out the
+accursed good for fuckall broadcom card and put in a sweet intel job.
+
+Use ```# wifi_menu ``` and connect to your wifi network. Alternatively plug in
+your USB ethernet adaptor you stole from your previous job.
+
 ## Make partitions
 
 Here is where you detroy the data on your M2 disk and build a new Arch distro
-on top of it. Did you know that you could take it out, store it somewhere save,
-and stick a new one in, maybe even say a 1TB one. The cost about AU$450 at the
-time of writing, so fuck that.
+on top of its smoking ruin. Did you know that you could take it out, store it
+somewhere save, and stick a new one in, maybe even say a 1TB one. Now you do.
+However, they do cost about AU$450 at the time of writing, so fuck that.
 
 
 You are shooting for a layout like so:
@@ -54,7 +60,7 @@ Device            Start       End   Sectors   Size Type
 ```
 
 - A small EFI boot disk
-- A larger swap disk, 8G seems fine.
+- A larger swap disk, ~8G seems fine.
 - The rest of the space
 
 Some peasants like to have a ```/home``` partition, those types of people
@@ -62,16 +68,18 @@ usually do a lot of other stupid shit too, so do as you please, a single / on a
 M2 based laptop is fine for me.
 
 Use ```cfdisk``` a nice curses clownsuit for fdisk, or just use fdisk. I use
-```cfdisk``` ```gparted``` is also a good choice, just get your partitions made
+```cfdisk```, ```gparted``` is also a good choice, just get your partitions made
 and be happy.
 
 
 For ```cfdisk```
 - Select label as ```dos```
-- Use the TUI and create swap and root partition using the buttons. I first make
-  the swap which is 2x the RAM size, and then the / partition, which is the
-  rest of the physical disk.
-- use swap type for the swap partition, and ext4 for the / partition
+- Use the TUI and create boot, swap and root partition using the buttons. I first make
+  the boot, which is 512M, then the swap which is 2x the RAM size, and then the
+  `/` partition, which is the rest of the physical disk.
+- use fat for the ESP partition
+- use swap type for the swap partition
+- ext4 for the / partition
 - make / bootable
 - `write` changes and quit 
 
@@ -265,23 +273,17 @@ Install some things we know we want right now
 Now add a priveledged user (thys) and give it sudo rights.
 
 ```
-useradd -m -g users -s /bin/zsh thys
+useradd -m -G users,wheel,adm -s /bin/bash thys
 passwd thys
-visudo # thys ALL=(ALL) ALL
+visudo # uncomment #%wheel ALL=(ALL) ALL
 ```
 
-For a admin-type user its convenient to also be in the `wheel` and `adm` groups, this way
-you can view system logs without sudo escalation.
-```
-gpasswd -a thys wheel
-gpasswd -a thys adm
-```
 
 ``` journalctrl -p 3 -xb ``` now shows all logs for thys
 
-Now typically use the nomal user for day to day things and escalate to `sudo`
-when needed. Now is a good time to give the `root` user a passwd, as arch does
-not set one OOTB, or maybe better yet just disable it. I, however don't as it
-irritates the wowsers and irritating wowsers pleases me.
+Use the nomal user for day to day things and escalate to `sudo` when needed.
+Now is a good time to give the `root` user a passwd, as arch does not set one
+or maybe better yet just disable it. I, however don't as it irritates the
+wowsers and irritating wowsers pleases me.
 
 
