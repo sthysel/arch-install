@@ -255,6 +255,25 @@ Now update the bootloader:
 # mkinitcpio -p linux
 ```
 
+### User
+Now add a priveledged user (thys) and give it sudo rights.
+
+```
+useradd -m -G users,wheel,adm -s /bin/bash thys
+passwd thys
+visudo # uncomment #%wheel ALL=(ALL) ALL
+```
+
+
+```journalctrl -p 3 -xb ``` now shows all logs for thys
+
+Use the nomal user for day to day things and escalate to `sudo` when needed.
+Now is a good time to give the `root` user a passwd, as arch does not set one
+or maybe better yet just disable it. I, however don't as it irritates the
+wowsers and irritating wowsers pleases me.
+
+# Reboot
+
 Now exit the chroot, unmout the partitions and reboot.
 
 ```
@@ -267,23 +286,62 @@ Now exit the chroot, unmout the partitions and reboot.
 
 Install some things we know we want right now
 ```
-# pacman -S zsh tree docker git i
+# pacman -S zsh tree docker git
 ```
 
-Now add a priveledged user (thys) and give it sudo rights.
+## Gnome
+This machine will run i3 predominantly but Gnome is nice so install it:
 
 ```
-useradd -m -G users,wheel,adm -s /bin/bash thys
-passwd thys
-visudo # uncomment #%wheel ALL=(ALL) ALL
+# pacman -S gnome gnome-extra
+```
+
+As well as some other usefull things
+
+```
+# pacman -S iw wpa_supplicant dialog network-manager-applet networkmanager
+```
+
+Gnome comes with gdm, but you can use any display manager, or none at at all,
+just .xinitrc, gdm is nice so I roll with that.
+
+## The touchpad:
+
+Gnome handles the touhpad just fine, for 'i3' setup like below. Maybe I'll learn how 
+to tell all window managers to honour this one config someday.
+
+```
+# pacman -S xf86-input-libinput
+```
+
+In ```/etc/X11/xorg.conf.d/30-touchpad.conf``` config the touchpad like so
+```
+Section "InputClass"
+        Identifier "MyTouchpad"
+        MatchIsTouchpad "on"
+        Driver "libinput"
+        Option "Tapping" "on"
+        Option "Natural Scrolling" "on"
+EndSection
 ```
 
 
-``` journalctrl -p 3 -xb ``` now shows all logs for thys
+## Bootup
+Tell systemd to start GNOME Display Manager and networking at boot time:
 
-Use the nomal user for day to day things and escalate to `sudo` when needed.
-Now is a good time to give the `root` user a passwd, as arch does not set one
-or maybe better yet just disable it. I, however don't as it irritates the
-wowsers and irritating wowsers pleases me.
+```
+# systemctl enable NetworkManager.service
+# systemctl enable gdm.service
+```
 
+
+Before you reboot into your new system, exit the chroot environment and then unmount the partitions that we mounted during installation:
+
+# exit
+
+# umount -R /mnt
+
+And now reboot the system:
+
+# reboot
 
