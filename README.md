@@ -209,7 +209,7 @@ editor 0
 Take note of the long UUID number, and create arch.conf file:
 
 ```
-# blkid -s PARTUUID -o value /dev/nvme0n1p2 >>  /boot/loader/entries/arch.conf
+# blkid -s PARTUUID -o value /dev/nvme0n1p3 >>  /boot/loader/entries/arch.conf
 ```
 
 Take note of the long UUID number you just append to the end of arch.conf file and
@@ -226,12 +226,9 @@ options root=PARTUUID=66e3f67d-f59a-4086-acdd-a6e248a3ee80 rw
 ```
 
 
-It’s now time to update the bootloader:
+It’s now time to update the bootloader ```# bootctl update ```
 
-```
-# bootctl update
-
-Dell XPS 13 uses PCIe for storage, you need to add `nvme` module. Edit the
+Dell XPS 13 uses PCIe for storage, you need to add the `nvme` module. Edit the
 mkinitcpio configuration file:
 
 ```
