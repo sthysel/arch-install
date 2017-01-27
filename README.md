@@ -39,13 +39,14 @@ your USB ethernet adaptor you stole from your previous job.
 
 ## Make partitions
 
+![M.2](./pics/m2.jpg)
+
 So, you are a security nut with shit to hide ? Of course you are, they have made perps of us all so
-use [this
-guide](https://wiki.archlinux.org/index.php/dm-crypt/encrypting_an_entire_system)
+use [this guide](https://wiki.archlinux.org/index.php/dm-crypt/encrypting_an_entire_system)
 to exersise the little power you assume you have left, you poor deluded 20'th
 century fool.
 
-Here is where you detroy the data on your M2 disk and build a new Arch distro
+Here is where you detroy the data on your M.2 disk and build a new Arch distro
 on top of its smoking ruin. Did you know that you could take it out, store it
 somewhere save, and stick a new one in, maybe even say a 1TB one. Now you do.
 However, they do cost about AU$450 at the time of writing, so fuck that.
