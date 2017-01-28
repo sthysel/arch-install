@@ -344,6 +344,18 @@ EndSection
 
 # Misc
 
+## vim and neovim
+
+vim and nevim was installed earlier:
+
+```
+$ sudo pacman -S neovim gvim xcel xclicp
+```
+
+gvim enables vim's clipboard, neovim uses the external tools. When installing
+gvim its OK to let pacman uninstall vim.
+
+
 ## Insync
 
 Insync syncs google drive.
@@ -361,7 +373,9 @@ Add to i3 config
 exec --no-startup-id insync start
 ```
 
-Retart i3 for insync icon to appear in statsbar.
+Retart i3 for insync icon to appear in statsbar. Click on the icon to select
+accounts and what folders not to sync.  By defailt insync syncs the whole
+thing, maybe you don't want your whole photo archive on your dev laptop.
 
-
+The insync cli tools are also usefull.
 
