@@ -1,10 +1,13 @@
 # Installing arch on Dell XPS 13 9350 
 
 This recipe describes how to install Arch onto a Dell XPS 13 9350 machine.  It
-destroys all previous installed OS's and boots Linux only, as it should be.
+destroys all previous installed OS's and boots Linux only. This is as it should
+be.
 
-First get a iso that you can use to burn to a USB stick and boot the XPS. The
-arch wiki's install section will have a link.
+First get a iso that you'll use to burn to a USB stick and boot the XPS. The
+[Arch wiki's install section](htps://wiki.archlinux.org/index.php/installation_guide)
+will have a link.
+
 
 ## Write iso to USB flash drive:
 
@@ -18,16 +21,16 @@ Disable secure boot in bios, change boot sequence to boot of USB drive first.
 ## Boot of USB disk
 
 Now boot of the USB stick, it will drop you into a root terminal, you will now:
-- make sure you have coms, wifi or ethernet using a USB dongle.
-- make some partitions, typically / and swap.
+- make sure you have coms, wifi or ethernet using a USB dongle
+- make some partitions, typically / and swap
 - format the partitions
 - mount the / partition somwhere convenient in the live bootimage
-- install arch base into / of the internet.
+- install arch base into / of the internet
 - chroot into the base image
 - do some system setup
 - reboot into your new arch system
 - continue with typical userland setup like a display manger, window manager
-  and apps.
+  and apps
 
 ## Internet
 
@@ -43,12 +46,12 @@ your USB ethernet adaptor you stole from your previous job.
 
 So, you are a security nut with shit to hide ? Of course you are, they have made perps of us all so
 use [this guide](https://wiki.archlinux.org/index.php/dm-crypt/encrypting_an_entire_system)
-to exersise the little power you assume you have left, you poor deluded 20'th
-century fool.
+to exersise the little power you assume you have left, you poor deluded 21'th
+century peasant.
 
-Here is where you detroy the data on your M.2 disk and build a new Arch distro
-on top of its smoking ruin. Did you know that you could take it out, store it
-somewhere save, and stick a new one in, maybe even say a 1TB one. Now you do.
+Here is where you destroy the data on your M.2 disk and build a new Arch distro
+on top of its smoking ruin. Did you know that you could take the M.2 out, store it
+somewhere save, and stick a new one in, maybe even say, a 1TB one ? Now you do.
 However, they do cost about AU$450 at the time of writing, so fuck that.
 
 
@@ -73,8 +76,8 @@ Device            Start       End   Sectors   Size Type
 - The rest of the space
 
 Some peasants like to have a ```/home``` partition, those types of people
-usually do a lot of other stupid shit too, so do as you please, a single / on a
-M2 based laptop is fine for me.
+usually do a lot of other stupid shit too, so do according to your type, a
+single / on a M.2 tiny laptop is fine for me.
 
 Use ```cfdisk``` a nice curses clownsuit for fdisk, or just use fdisk. I use
 ```cfdisk```, ```gparted``` is also a good choice, just get your partitions made
@@ -159,8 +162,8 @@ Now chroot to the newly installed Arch system:
 # arch-chroot /mnt /bin/bash
 ```
 
-Fucking immediately install `vim` how the fuck can't that be part of the base
-install ?
+Fucking immediately install `vim` how in the fucking fuck can't that be part of
+the base install ? 
 
 ```
 pacman -S vim
@@ -202,8 +205,8 @@ Set hostname in ```/etc/hosts``` as well as ```/etc/hostname```.
 ### Boot
 
 Now you need to enable booting the bootable partition we prepared earlier.
-Grub is not working on this laptop so you will be using using systemd-boot in
-UEFI mode.
+Blessed Grub is not working for this model (aur grub-git supposedly does) so you
+will be using using systemd-boot in UEFI mode. It sound worse than it is.
 
 Install the bootloader:
 ```
@@ -344,12 +347,12 @@ EndSection
 
 # Misc
 
-## vim and neovim
+## vim and neovim and 
 
 vim and nevim was installed earlier:
 
 ```
-$ sudo pacman -S neovim gvim xcel xclicp
+$ sudo pacman -S neovim gvim xsel xclicp
 ```
 
 gvim enables vim's clipboard, neovim uses the external tools. When installing
