@@ -347,9 +347,10 @@ EndSection
 
 # Misc
 
-## vim and neovim and 
+## vim and neovim and the everlasting clusterfuck wrought by multiple clipboards
 
-vim and nevim was installed earlier:
+Once you accept the reality of the fifty fucking shades of clipboards floating arround
+in your otherwise sane system, you deal with it like so:
 
 ```
 $ sudo pacman -S neovim gvim xsel xclicp
@@ -357,6 +358,11 @@ $ sudo pacman -S neovim gvim xsel xclicp
 
 gvim enables vim's clipboard, neovim uses the external tools. When installing
 gvim its OK to let pacman uninstall vim.
+
+'Clipboard' is available from the '+' register, '*' maps to the system clipboard
+that usually gets things from auto-higlight select. Fot this to work you need to have
+a vim with clipboard capability, gvim does, stock vim does not, neovim uses external
+tools.
 
 
 ## Insync
