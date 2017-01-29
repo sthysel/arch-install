@@ -382,3 +382,36 @@ thing, maybe you don't want your whole photo archive on your dev laptop.
 
 The insync cli tools are also usefull.
 
+## Powerline
+
+Oh powerline though nasty fuck, why does doth vex me so ?
+
+Install powerline
+```
+$ pacman -Si powerline
+```
+
+Powerline fonts. There are a few ways of going about this. In the spirit of Arch
+use the AUR
+
+```
+$ git clone https://aur.archlinux.org/powerline-fonts-git.git
+$ powerline-fonts-git/
+$ less PKGBUILD # does this look OK to you, fuck yea whatever
+$ less powerline-fonts-git.install # ditto
+$ makepkg -si
+```
+
+Add powerline things to shells that need to know
+
+In .bashrc
+```
+# powerline things 
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+
+POWERLINE_BASH=/usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
+. ${POWERLINE_BASH}
+```
+
