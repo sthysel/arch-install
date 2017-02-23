@@ -44,10 +44,10 @@ your USB ethernet adaptor you stole from your previous job.
 
 ![M.2](./pics/m2.jpg)
 
-So, you are a security nut with shit to hide ? Of course you are, they have made perps of us all so
+So, you are a security nut with bones to hide ? Of course you are, they have made perps of us all so
 use [this guide](https://wiki.archlinux.org/index.php/dm-crypt/encrypting_an_entire_system)
 to exersise the little power you assume you have left, you poor deluded 21'th
-century peasant.
+century peasant. Use that guide if you're the type.
 
 Here is where you destroy the data on your M.2 disk and build a new Arch distro
 on top of its smoking ruin. Did you know that you could take the M.2 out, store it
@@ -126,7 +126,7 @@ Now for swap:
 # swapon /dev/nvme0n1p2
 ```
 
-Here goes the pr0n:
+Here goes the /
 
 ```
 # mkfs.ext4 /dev/nvme0n1p3
@@ -163,7 +163,7 @@ Now chroot to the newly installed Arch system:
 ```
 
 Fucking immediately install `vim` how in the fucking fuck can't that be part of
-the base install ? 
+the base install ? no. NO ! 
 
 ```
 pacman -S vim
@@ -172,7 +172,7 @@ pacman -S vim
 ### Set and generate the locale
 
 ```
-# vim /etc/locale.gen # en.US_UTF-8 UTF-8
+# vim /etc/locale.gen # en.US\_UTF-8 UTF-8
 # locale-gen
 ```
 
@@ -281,8 +281,6 @@ visudo # uncomment #%wheel ALL=(ALL) ALL
 
 Use the nomal user for day to day things and escalate to `sudo` when needed.
 Now is a good time to give the `root` user a passwd, as arch does not set one
-or maybe better yet just disable it. I, however don't as it irritates the
-wowsers and irritating wowsers pleases me.
 
 # Reboot
 
@@ -311,7 +309,7 @@ This machine will run i3 predominantly but Gnome is nice so install it:
 As well as some other usefull things
 
 ```
-# pacman -S iw wpa_supplicant dialog network-manager-applet networkmanager
+# pacman -S iw wpa\_supplicant dialog network-manager-applet networkmanager
 ```
 
 Gnome comes with gdm, but you can use any display manager, or none at at all,
@@ -345,12 +343,12 @@ Section "InputClass"
 EndSection
 ```
 
-# Misc
+## vim 
 
-## vim and neovim and the everlasting clusterfuck wrought by multiple clipboards
+Welcome to the world of vim and neovim and the everlasting clusterfuck wrought by multiple clipboards.
 
-Once you accept the reality of the fifty fucking shades of clipboards floating arround
-in your otherwise sane system, you deal with it like so:
+Once you accept the reality of the fifty fucking shades of clipboards floating arround in your otherwise sane
+system, you deal with it like so:
 
 ```
 $ sudo pacman -S neovim gvim xsel xclicp
@@ -390,7 +388,6 @@ The insync cli tools are also usefull.
 
 ## Powerline
 
-Oh powerline though nasty fuck, why does doth vex me so ?
 
 Install powerline
 ```
