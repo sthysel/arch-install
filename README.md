@@ -172,7 +172,7 @@ pacman -S vim
 ### Set and generate the locale
 
 ```
-# vim /etc/locale.gen # en.US\_UTF-8 UTF-8
+# vim /etc/locale.gen # en.US_UTF-8 UTF-8
 # locale-gen
 ```
 
@@ -309,7 +309,7 @@ This machine will run i3 predominantly but Gnome is nice so install it:
 As well as some other usefull things
 
 ```
-# pacman -S iw wpa\_supplicant dialog network-manager-applet networkmanager
+# pacman -S iw wpa_supplicant dialog network-manager-applet networkmanager
 ```
 
 Gnome comes with gdm, but you can use any display manager, or none at at all,
@@ -391,7 +391,7 @@ The insync cli tools are also usefull.
 
 Install powerline
 ```
-$ pacman -Si powerline
+$ pacman -S powerline
 ```
 
 Powerline fonts. There are a few ways of going about this. In the spirit of Arch
@@ -408,13 +408,18 @@ $ makepkg -si
 Add powerline things to shells that need to know
 
 In .bashrc
-```
-# powerline things 
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
 
+``` bash
+
+# powerline things 
 POWERLINE_BASH=/usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
-. ${POWERLINE_BASH}
+if [[ -f ${POWERLINE_BASH} ]]
+then
+  powerline-daemon -q
+  POWERLINE_BASH_CONTINUATION=1
+  POWERLINE_BASH_SELECT=1
+  . ${POWERLINE_BASH}
+fi
+
 ```
 
