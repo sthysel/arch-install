@@ -176,12 +176,11 @@ pacman -S vim
 # locale-gen
 ```
 
-Register the locale in ```/etc/locale.conf``` : ```vim /etc/locale.conf``` And
-add  ```LANG=en_US.UTF-8```
+Register the locale in `/etc/locale.conf` : `vim /etc/locale.conf` And add  `LANG=en_US.UTF-8`
 
 ### Timezone
 
-Find your timezone in ```/usr/share/timezone``` and link it to ```/etc/localtime```
+Find your timezone in `/usr/share/timezone` and link it to `/etc/localtime`
 
 ```
 # rm /etc/localtime
@@ -194,7 +193,7 @@ Set system and harware clock to UTC.
 ```
 
 ### Hostname
-Set hostname in ```/etc/hosts``` as well as ```/etc/hostname```.
+Set hostname in `/etc/hosts` as well as `/etc/hostname`.
 
 ### Get IP from DHCP server
 
@@ -209,6 +208,7 @@ Blessed Grub is not working for this model (aur grub-git supposedly does) so you
 will be using using systemd-boot in UEFI mode. It sound worse than it is.
 
 Install the bootloader:
+
 ```
 # bootctl --path=/boot install
 ```
@@ -246,7 +246,7 @@ options root=PARTUUID=66e3f67d-f59a-4086-acdd-a6e248a3ee80 rw
 ```
 
 
-It’s now time to update the bootloader ```# bootctl update ```
+It’s now time to update the bootloader `# bootctl update `
 
 Dell XPS 13 uses PCIe for storage, you need to add the `nvme` module. Edit the
 mkinitcpio configuration file:
@@ -277,7 +277,7 @@ visudo # uncomment #%wheel ALL=(ALL) ALL
 ```
 
 
-```journalctrl -p 3 -xb ``` now shows all logs for thys
+`journalctrl -p 3 -xb ` now shows all logs for thys
 
 Use the nomal user for day to day things and escalate to `sudo` when needed.
 Now is a good time to give the `root` user a passwd, as arch does not set one
@@ -295,8 +295,9 @@ Now exit the chroot, unmout the partitions and reboot.
 # Post Install
 
 Install some things we know we want right now
+
 ```
-# pacman -S zsh tree docker git
+# pacman -S zsh tree docker git ttf-hack
 ```
 
 ## Gnome
@@ -332,7 +333,8 @@ to tell all window managers to honour this one config someday.
 # pacman -S xf86-input-libinput
 ```
 
-In ```/etc/X11/xorg.conf.d/30-touchpad.conf``` config the touchpad like so
+In `/etc/X11/xorg.conf.d/30-touchpad.conf` config the touchpad like so
+
 ```
 Section "InputClass"
         Identifier "MyTouchpad"
@@ -394,8 +396,10 @@ Install powerline
 $ pacman -S powerline
 ```
 
+## Old And busted way, don't do this see next section 
+
 Powerline fonts. There are a few ways of going about this. In the spirit of Arch
-use the AUR
+use the AUR:
 
 ```
 $ git clone https://aur.archlinux.org/powerline-fonts-git.git
@@ -403,6 +407,16 @@ $ powerline-fonts-git/
 $ less PKGBUILD # does this look OK to you, fuck yea whatever
 $ less powerline-fonts-git.install # ditto
 $ makepkg -si
+
+```
+
+# New hotness
+
+Following along the hack ttf should already be intalled, here it is again
+because you are a non-contributing nobody.
+
+```
+# pacman -Su ttf-hack
 ```
 
 Add powerline things to shells that need to know
