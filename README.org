@@ -485,7 +485,7 @@ of Arch use the AUR:
 #+END_EXAMPLE
 
 * New hotness
-  :PROPERTIES:
+ :PROPERTIES:
   :CUSTOM_ID: new-hotness
   :END:
 
